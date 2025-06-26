@@ -38,6 +38,6 @@ async function fetchFuturesPrices() {
   }
 }
 
-// Start loop
-fetchFuturesPrices();                 // Run once immediately
-setInterval(fetchFuturesPrices, 1000); // Run every second
+
+fetchFuturesPrices();                
+setInterval(fetchFuturesPrices, 60000); 
