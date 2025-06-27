@@ -1,43 +1,43 @@
-const { Client } = require('pg');
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+// package.json  →  { "type": "module" }
+import fetch from 'node-fetch';
+import http  from 'node:http';
 
-const client = new Client({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
-  password: 'romiko2009',
-  port: 5432,
-});
-
-client.connect()
-  .then(() => console.log("✅ Connected to PostgreSQL"))
-  .catch(err => console.error("❌ Connection error:", err.message));
-
-async function fetchFuturesPrices() {
+async function fetchFuturesPrices () {
   try {
-    const res = await fetch("https://fapi.binance.com/fapi/v1/premiumIndex");
-    const data = await res.json();
-    const time = new Date();
+    const res  = await fetch('https://fapi.binance.com/fapi/v1/premiumIndex');
+    const json = await res.json();
+    const tsNs = BigInt(Date.now()) * 1_000_000n;               // nanoseconds
 
-    const usdtPairs = data.filter(item => item.symbol.endsWith("USDT"));
+    const lines = json
+      .filter(i => i.symbol.endsWith('USDT'))
+      .map(i => `crypto_prices,symbol=${i.symbol.slice(0,-4)} `
+              + `price=${Number(i.markPrice)} ${tsNs}`)
+      .join('\n') + '\n';                                       // final \n
 
-    for (const coin of usdtPairs) {
-      const coinName = coin.symbol.replace("USDT", "");
-      const price = parseFloat(coin.markPrice);
+    const req = http.request({
+      host: 'localhost',
+      port: 9000,
+      path: '/write?db=qdb&precision=ns',                       // ← db added
+      method: 'POST',
+      headers: {
+        'Content-Type':  'text/plain',
+        'Content-Length': Buffer.byteLength(lines)              // ← correct length
+      }
+    }, res => {
+      if (res.statusCode === 204) {
+        console.log(`[${new Date().toLocaleTimeString()}] ✅ ingested`);
+      } else {
+        res.setEncoding('utf8');
+        res.on('data', chunk => console.error(`❌ ${chunk}`));   // show error msg
+      }
+    });
 
-      await client.query(
-        'INSERT INTO crypto_prices (symbol, price, time) VALUES ($1, $2, $3)',
-        [coinName, price, time]
-      );
-
-      console.log(`[${time.toLocaleTimeString()}] ${coinName}: $${price}`);
-    }
-
-  } catch (err) {
-    console.error("❌ Error fetching Futures data:", err.message);
+    req.on('error', e => console.error('❌', e.message));
+    req.end(lines);
+  } catch (e) {
+    console.error('❌', e.message);
   }
 }
 
-
-fetchFuturesPrices();                
-setInterval(fetchFuturesPrices, 60000); 
+fetchFuturesPrices();
+setInterval(fetchFuturesPrices, 60_000);
