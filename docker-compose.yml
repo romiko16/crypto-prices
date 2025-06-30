@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  questdb:
+    image: questdb/questdb:latest
+    container_name: questdb
+    ports:
+      - "9000:9000"
+      - "8812:8812"
+    volumes:
+      - questdb-data:/root/.questdb
+
+  app:
+    build: .
+    container_name: crypto-price-app
+    depends_on:
+      - questdb
+    environment:
+      QUESTDB_HOST: questdb
+      FETCH_INTERVAL_MS: 60000
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_INSTALL_PLUGINS: questdb-questdb-datasource
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+
+volumes:
+  questdb-data:

@@ -1,0 +1,11 @@
+apiVersion: 1
+datasources:
+  - name: QuestDB
+    type: questdb-questdb-datasource
+    access: proxy
+    isDefault: true
+    url: http://questdb:9000
+    jsonData:
+      pgPort: 8812
+      pgUser: admin
+      pgPassword: quest
