@@ -1,0 +1,43 @@
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+{
+  "manifestVersion": "2.0.0",
+  "signatureType": "commercial",
+  "signedByOrg": "questdb",
+  "signedByOrgName": "questdb",
+  "plugin": "questdb-questdb-datasource",
+  "version": "0.1.5",
+  "time": 1747409221163,
+  "keyId": "7e4d0c6a708866e7",
+  "files": {
+    "img/logo.svg": "2d7cc604af41ddef575e0949e30c845caf8007b582c30184504a7344f76510ae",
+    "img/sql_builder.png": "1bbd4bbb9c1abcf454744751f1878a5e457db5cb1498812056e20629ddf2d625",
+    "CHANGELOG.md": "89a075ad7f04182abbcc54786f0632b3382a17a751777ed9d9584cb530373fd4",
+    "gpx_questdb_linux_arm": "41ddd1985ffd9a6ba65c03f4f1621924d30ec3b16d88df041879fc52293dcf06",
+    "README.md": "f89e77ffcf71abffae7f82f4d0440738ee2064d20a76150f25b50abe272bcafc",
+    "gpx_questdb_darwin_arm64": "e0a89a64e5a1ae412c301f1c632ab470cea0b34af425d8b6348e5f95b7f2c5ac",
+    "go_plugin_build_manifest": "e7b36227ae9bc70a0e6f4771db2fea5752dbca98070957a73abddd6487f80077",
+    "module.js.map": "a2c58b0f07ac25d75fb664ae7ec855fdaae47379cbdf15b5d40819d291927e9c",
+    "module.js.LICENSE.txt": "51f21678ea3163dbd6df4abd3c58c069d4a722b0055f7ef97b7a2e8bb6514121",
+    "LICENSE": "6004877f0c217f92ab02f8b8d61df352fe65ce0a752e5919b1a64d8ee43a8d56",
+    "module.js": "266393b5456b051edec588f78350678b77a9dab888a5411daf85bb61684fce48",
+    "gpx_questdb_linux_amd64": "7f0c0dc89874b21d0dd599a47661582d8d78bf5fdc274f44e0858e72452cdc6e",
+    "gpx_questdb_windows_amd64.exe": "dc01c5a047700515183cef093f86dbe567f9b4d71ec68af0ca3fafce335cefd3",
+    "plugin.json": "8750ec0834028183102252a792c28cfc80efa170077dea7e12ce8abad4e8f094",
+    "gpx_questdb_linux_arm64": "9585ea9bc0961f63fd61ab5242a491c65c141729a2d79a7d60d702dd6312a989",
+    "gpx_questdb_darwin_amd64": "b8b7f04c571192e8a4f524021132b41609258987648c425b055964662fa32ecc"
+  }
+}
+-----BEGIN PGP SIGNATURE-----
+Version: OpenPGP.js v4.10.11
+Comment: https://openpgpjs.org
+
+wrkEARMKAAYFAmgnWUUAIQkQfk0ManCIZucWIQTzOyW2kQdOhGNlcPN+TQxq
+cIhm5z9xAgkAUpe0yH53vHvQOrFvjdWT2/DHQ76onL72HXk6nd7rkevTDE6m
+zYjMtUQP5jUFgBFqsDpsxAS9kOBHFMQuW6EqgBACCQBDaC7QNjG557Z+80j7
+FjqXtobuUNfty46Y0kzADfrYiC1zkae5HzywU+kPns7taWUeFW968Y7cPTtc
+fTw1uWun8w==
+=kOun
+-----END PGP SIGNATURE-----
