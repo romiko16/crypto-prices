@@ -1,6 +1,9 @@
-version: "3.9"
+version: '3.8'
 
 services:
+  # ────────────────────────────────
+  #  Node.js app (price ingester)
+  # ────────────────────────────────
   app:
     build: .
     container_name: crypto-price-app
@@ -9,30 +12,39 @@ services:
     environment:
       QUESTDB_HOST: questdb
       FETCH_INTERVAL_MS: 60000
+      TZ: Asia/Tbilisi        # ← container clock in GMT+4
+    restart: unless-stopped
+
+  # ────────────────────────────────
+  #  QuestDB time-series database
+  # ────────────────────────────────
   questdb:
-      image: questdb/questdb:8.3.2
-      container_name: liquid-questdb
-      ports:
-        - "127.0.0.1:9000:9000"
-        - "127.0.0.1:8812:8812"
-        - "127.0.0.1:9009:9009"
-        - "127.0.0.1:9003:9003"
-      volumes:
-        - ./.questdb:/var/lib/questdb
-      environment:
-        - QDB_PG_READONLY_USER_ENABLED=true
-      restart: unless-stopped
+    image: questdb/questdb:latest
+    container_name: liquid-questdb
+    ports:
+      - "9000:9000"           # Web UI  + HTTP ILP
+      - "8812:8812"           # PostgreSQL wire protocol
+      - "9009:9009"           # TCP ILP
+      - "9003:9003"           # Health & metrics
+    volumes:
+      - ./.questdb:/var/lib/questdb
+    environment:
+      - TZ=Asia/Tbilisi
+      - QDB_PG_READONLY_USER_ENABLED=true
+    restart: unless-stopped
+
+  # ────────────────────────────────
+  #  Grafana visualisation
+  # ────────────────────────────────
   grafana:
     image: grafana/grafana-oss
     container_name: liquid-grafana
-    volumes:
-      - ./.grafana:/var/lib/grafana
-    depends_on:
-      - questdb
     ports:
       - "3000:3000"
+    volumes:
+      - ./.grafana:/var/lib/grafana
+    environment:
+      - TZ=Asia/Tbilisi
+    depends_on:
+      - questdb
     restart: unless-stopped
-
-
-
-  
