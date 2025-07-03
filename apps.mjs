@@ -20,7 +20,7 @@ async function sendBatch() {
       host,
       port: 9000,
       path: '/write?db=qdb&precision=ns',
-      method: 'POST',
+      method: 'POST'
       headers: { 'Content-Type': 'text/plain',
                  'Content-Length': Buffer.byteLength(lines) }
     }, r => r.statusCode === 204 ? res() : rej(new Error('HTTP '+r.statusCode)));
